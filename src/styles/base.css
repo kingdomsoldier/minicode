@@ -1,0 +1,61 @@
+/* ===== Reset y layout raíz ===== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  /* Elimina el flash azul al tocar en móvil */
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  /* Sin pull-to-refresh ni rebote elástico */
+  overscroll-behavior: none;
+  /* Sin zoom por doble tap */
+  touch-action: manipulation;
+}
+
+body {
+  background: #0a0a0a;
+  color: #ededed;
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 14px;
+  /* Sin selección por defecto: la UI no es texto para copiar */
+  user-select: none;
+  -webkit-user-select: none;
+  /* Sin menú contextual nativo al hacer long press */
+  -webkit-touch-callout: none;
+}
+
+/* Cuando hay un overlay abierto, bloqueamos el scroll del body */
+body.has-overlay-open {
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  overflow: hidden;
+  transition: padding-bottom 0.15s ease-out;
+}
+
+/* ===== Zonas donde SÍ se puede seleccionar texto ===== */
+
+.cm-content,
+.cm-line,
+.editor-container,
+.output-body,
+.output-stack,
+.fb-path,
+.tm-title {
+  user-select: text;
+  -webkit-user-select: text;
+  -webkit-touch-callout: default;
+}

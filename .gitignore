@@ -1,0 +1,46 @@
+# Dependencias
+node_modules/
+.npm/
+.pnpm-store/
+
+# Build de producción
+dist/
+build/
+.next/
+
+# Build de desarrollo (se regeneran)
+public/bundle.js
+public/bundle.js.map
+public/styles.css
+public/runner.worker.js
+public/runner.worker.js.map
+public/analysis.worker.js
+public/analysis.worker.js.map
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.minicode.log
+
+# Variables de entorno
+.env
+.env.local
+.env.*.local
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# Editor
+.vscode/
+.idea/
+*.sublime-*
+
+# Temporales
+*.tmp
+.cache/

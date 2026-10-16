@@ -1,0 +1,40 @@
+/* ===== Toolbar inferior (símbolos) ===== */
+
+.toolbar {
+  flex-shrink: 0;
+  background: #171717;
+  border-top: 1px solid #262626;
+}
+
+.toolbar-symbols {
+  display: flex;
+  overflow-x: auto;
+  padding: 6px 8px;
+  gap: 4px;
+}
+
+.toolbar-symbols::-webkit-scrollbar {
+  display: none;
+}
+.toolbar-symbols {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.toolbar-symbol {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  background: #1f1f1f;
+  border: none;
+  border-radius: 6px;
+  color: #ededed;
+  font-size: 14px;
+  font-family: ui-monospace, monospace;
+  cursor: pointer;
+  user-select: none;
+}
+
+.toolbar-symbol:active {
+  background: #2f2f2f;
+}

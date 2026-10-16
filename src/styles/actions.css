@@ -1,0 +1,125 @@
+/* ===== Barra de acciones (arriba) ===== */
+
+.actions {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 8px;
+  background: #171717;
+  border-bottom: 1px solid #262626;
+  /* Altura fija + overflow oculto para animar el ocultado */
+  height: 44px;
+  max-height: 44px;
+  overflow: hidden;
+  transition: max-height 0.18s ease-out, opacity 0.18s ease-out,
+    padding 0.18s ease-out;
+}
+
+/* Estado oculto: se colapsa a 0px */
+.actions.is-hidden {
+  max-height: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  opacity: 0;
+  border-bottom-width: 0;
+}
+
+.action-btn {
+  height: 34px;
+  min-width: 40px;
+  padding: 0 12px;
+  background: #1f1f1f;
+  border: none;
+  border-radius: 8px;
+  color: #ededed;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  flex-shrink: 0;
+  user-select: none;
+  font-family: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.action-btn:active {
+  background: #2f2f2f;
+}
+
+.action-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+/* ===== Botón Guardar y sus indicadores ===== */
+
+.action-save {
+  position: relative;
+}
+
+.action-save.is-dirty {
+  background: #b45309;
+  color: #fff;
+}
+
+.action-save.has-others::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  width: 6px;
+  height: 6px;
+  background: #f59e0b;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.action-save.is-dirty.has-others::after {
+  display: none;
+}
+
+/* ===== Botón Ejecutar ===== */
+
+.action-run {
+  margin-left: auto;
+  width: 44px;
+  min-width: 44px;
+  padding: 0;
+  font-size: 15px;
+  background: #10b981;
+  color: #fff;
+  font-weight: 700;
+}
+
+.action-run:active {
+  background: #059669;
+}
+
+.action-run.is-running {
+  background: #b45309;
+  color: #fff;
+  opacity: 1;
+}
+
+/* ===== Botón Recargar ===== */
+
+.action-reload {
+  padding: 0 8px;
+  color: #a3a3a3;
+  font-size: 15px;
+}
+
+.action-reload:active {
+  color: #ededed;
+}
+
+/* ===== Botón Menú ⋯ ===== */
+
+.action-menu {
+  padding: 0 10px;
+  font-size: 18px;
+  line-height: 1;
+  font-weight: 700;
+}

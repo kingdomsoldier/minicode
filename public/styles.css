@@ -1,0 +1,1496 @@
+/* ==========================================================
+   base.css
+   ==========================================================
+*/
+/* ===== Reset y layout raíz ===== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  /* Elimina el flash azul al tocar en móvil */
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  /* Sin pull-to-refresh ni rebote elástico */
+  overscroll-behavior: none;
+  /* Sin zoom por doble tap */
+  touch-action: manipulation;
+}
+
+body {
+  background: #0a0a0a;
+  color: #ededed;
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 14px;
+  /* Sin selección por defecto: la UI no es texto para copiar */
+  user-select: none;
+  -webkit-user-select: none;
+  /* Sin menú contextual nativo al hacer long press */
+  -webkit-touch-callout: none;
+}
+
+/* Cuando hay un overlay abierto, bloqueamos el scroll del body */
+body.has-overlay-open {
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  overflow: hidden;
+  transition: padding-bottom 0.15s ease-out;
+}
+
+/* ===== Zonas donde SÍ se puede seleccionar texto ===== */
+
+.cm-content,
+.cm-line,
+.editor-container,
+.output-body,
+.output-stack,
+.fb-path,
+.tm-title {
+  user-select: text;
+  -webkit-user-select: text;
+  -webkit-touch-callout: default;
+}
+
+/* ==========================================================
+   actions.css
+   ==========================================================
+*/
+/* ===== Barra de acciones (arriba) ===== */
+
+.actions {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 8px;
+  background: #171717;
+  border-bottom: 1px solid #262626;
+  /* Altura fija + overflow oculto para animar el ocultado */
+  height: 44px;
+  max-height: 44px;
+  overflow: hidden;
+  transition: max-height 0.18s ease-out, opacity 0.18s ease-out,
+    padding 0.18s ease-out;
+}
+
+/* Estado oculto: se colapsa a 0px */
+.actions.is-hidden {
+  max-height: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  opacity: 0;
+  border-bottom-width: 0;
+}
+
+.action-btn {
+  height: 34px;
+  min-width: 40px;
+  padding: 0 12px;
+  background: #1f1f1f;
+  border: none;
+  border-radius: 8px;
+  color: #ededed;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  flex-shrink: 0;
+  user-select: none;
+  font-family: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.action-btn:active {
+  background: #2f2f2f;
+}
+
+.action-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+/* ===== Botón Guardar y sus indicadores ===== */
+
+.action-save {
+  position: relative;
+}
+
+.action-save.is-dirty {
+  background: #b45309;
+  color: #fff;
+}
+
+.action-save.has-others::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  width: 6px;
+  height: 6px;
+  background: #f59e0b;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.action-save.is-dirty.has-others::after {
+  display: none;
+}
+
+/* ===== Botón Ejecutar ===== */
+
+.action-run {
+  margin-left: auto;
+  width: 44px;
+  min-width: 44px;
+  padding: 0;
+  font-size: 15px;
+  background: #10b981;
+  color: #fff;
+  font-weight: 700;
+}
+
+.action-run:active {
+  background: #059669;
+}
+
+.action-run.is-running {
+  background: #b45309;
+  color: #fff;
+  opacity: 1;
+}
+
+/* ===== Botón Recargar ===== */
+
+.action-reload {
+  padding: 0 8px;
+  color: #a3a3a3;
+  font-size: 15px;
+}
+
+.action-reload:active {
+  color: #ededed;
+}
+
+/* ===== Botón Menú ⋯ ===== */
+
+.action-menu {
+  padding: 0 10px;
+  font-size: 18px;
+  line-height: 1;
+  font-weight: 700;
+}
+
+/* ==========================================================
+   tabs.css
+   ==========================================================
+*/
+/* ===== Pestañas ===== */
+
+.tabs {
+  flex-shrink: 0;
+  height: 36px;
+  display: flex;
+  align-items: stretch;
+  background: #171717;
+  border-bottom: 1px solid #262626;
+  overflow-x: auto;
+  overflow-y: hidden;
+  transition: max-height 0.18s ease-out, opacity 0.18s ease-out,
+    border-bottom-width 0.18s ease-out;
+  max-height: 36px;
+}
+
+/* Estado oculto: se colapsa a 0px */
+.tabs.is-hidden {
+  max-height: 0;
+  opacity: 0;
+  border-bottom-width: 0;
+  overflow: hidden;
+}
+
+.tabs::-webkit-scrollbar {
+  display: none;
+}
+.tabs {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.tab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 12px;
+  font-size: 12px;
+  color: #737373;
+  border-right: 1px solid #262626;
+  cursor: pointer;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.tab:active {
+  background: #1f1f1f;
+}
+
+.tab.is-active {
+  background: #0a0a0a;
+  color: #ededed;
+}
+
+.tab-name {
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tab-dot {
+  color: #f59e0b;
+  font-size: 8px;
+}
+
+.tab-memory {
+  color: #525252;
+  font-size: 14px;
+  line-height: 1;
+  margin-left: 2px;
+}
+
+.tab-close {
+  background: none;
+  border: none;
+  color: #737373;
+  font-size: 16px;
+  line-height: 1;
+  padding: 0 2px;
+  cursor: pointer;
+}
+
+.tab-close:active {
+  color: #ededed;
+}
+
+.tabs-open,
+.tabs-new {
+  background: none;
+  border: none;
+  color: #10b981;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 0 12px;
+  cursor: pointer;
+  flex-shrink: 0;
+  font-family: inherit;
+}
+
+.tabs-new {
+  color: #737373;
+  font-size: 18px;
+  padding: 0 10px;
+}
+
+.tabs-open:active,
+.tabs-new:active {
+  opacity: 0.7;
+}
+
+/* ==========================================================
+   editor.css
+   ==========================================================
+*/
+/* ===== Contenedor del editor ===== */
+
+.editor-container {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  background: #0a0a0a;
+  position: relative;
+}
+
+/* ===== Contención del scroll ===== */
+
+.editor-container {
+  overscroll-behavior: contain;
+}
+
+/* ==========================================================
+   editor-header.css
+   ==========================================================
+*/
+/* ===== Header fino sobre el editor ===== */
+
+.editor-header {
+  flex-shrink: 0;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 8px 0 12px;
+  background: #0f0f0f;
+  border-bottom: 1px solid #1a1a1a;
+  font-size: 11px;
+  user-select: none;
+  gap: 8px;
+}
+
+.editor-header-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  flex: 1;
+}
+
+.editor-header-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+/* ===== Contador de errores ===== */
+
+.editor-header-errors {
+  color: #ef4444;
+  font-weight: 600;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  padding: 1px 6px;
+  background: rgba(239, 68, 68, 0.1);
+  border-radius: 4px;
+  cursor: default;
+  letter-spacing: 0.3px;
+}
+
+/* ===== Lenguaje activo ===== */
+
+.editor-header-lang {
+  color: #525252;
+  font-weight: 600;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: 0.5px;
+}
+
+/* ===== Botón de toggle de la barra superior ===== */
+
+.editor-header-toggle {
+  width: 26px;
+  height: 22px;
+  background: #1a1a1a;
+  border: 1px solid #262626;
+  border-radius: 5px;
+  color: #a3a3a3;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  font-family: inherit;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.editor-header-toggle:active {
+  background: #262626;
+  color: #ededed;
+}
+
+.editor-header-toggle.is-expanded {
+  color: #a3a3a3;
+}
+
+.editor-header-toggle.is-collapsed {
+  color: #10b981;
+  border-color: #10b981;
+  background: rgba(16, 185, 129, 0.08);
+}
+
+/* ==========================================================
+   autocomplete.css
+   ==========================================================
+*/
+/* ===== Popup de autocompletado ===== */
+
+/* Contenedor del popup */
+.cm-tooltip-autocomplete {
+  background: #1a1a1a;
+  border: 1px solid #333333;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+  overflow: hidden;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+  padding: 4px 0;
+  /* Ancho acotado: no llega al borde de la pantalla */
+  max-width: min(320px, calc(100vw - 32px));
+  width: max-content;
+}
+
+.cm-tooltip-autocomplete > ul {
+  max-height: 260px;
+  font-family: inherit;
+  overflow-y: auto;
+}
+
+.cm-tooltip-autocomplete > ul > li {
+  padding: 6px 12px 6px 8px;
+  color: #ededed;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  max-width: 100%;
+}
+
+.cm-tooltip-autocomplete > ul > li[aria-selected] {
+  background: #2a2a2a;
+  color: #fff;
+}
+
+/* ===== Icono ===== */
+
+.cm-completionIcon {
+  width: 18px;
+  height: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+.cm-completionIcon::before {
+  display: block;
+  text-align: center;
+  width: 100%;
+}
+
+/* Variable: cuadrado azul relleno */
+.cm-completionIcon-variable::before {
+  content: '■';
+  color: #4ea8de;
+  font-size: 11px;
+}
+
+/* Función: ƒ violeta */
+.cm-completionIcon-function::before {
+  content: 'ƒ';
+  color: #a78bfa;
+  font-size: 15px;
+}
+
+/* Método: ƒ verde */
+.cm-completionIcon-method::before {
+  content: 'ƒ';
+  color: #34d399;
+  font-size: 15px;
+}
+
+/* Clase: rombo ámbar */
+.cm-completionIcon-class::before {
+  content: '◆';
+  color: #f59e0b;
+  font-size: 12px;
+}
+
+/* Propiedad: cuadrado pequeño celeste */
+.cm-completionIcon-property::before {
+  content: '▪';
+  color: #60a5fa;
+  font-size: 14px;
+}
+
+/* Keyword: K rojo */
+.cm-completionIcon-keyword::before {
+  content: 'K';
+  color: #ef4444;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+/* Snippet: ✂ dorado */
+.cm-completionIcon-snippet::before {
+  content: '✂';
+  color: #fbbf24;
+  font-size: 12px;
+}
+
+/* Namespace / import: flecha cyan */
+.cm-completionIcon-namespace::before {
+  content: '↗';
+  color: #06b6d4;
+  font-size: 14px;
+}
+
+/* Texto plano: punto gris */
+.cm-completionIcon-text::before {
+  content: '·';
+  color: #737373;
+  font-size: 18px;
+  font-weight: 900;
+}
+
+/* ===== Etiqueta ===== */
+
+.cm-completionLabel {
+  font-weight: 500;
+  color: inherit;
+  flex-grow: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+
+/* Match resaltado dentro de la etiqueta */
+.cm-completionMatchedText {
+  color: #60a5fa;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+/* ===== Detail a la derecha ===== */
+
+.cm-completionDetail {
+  color: #737373;
+  font-size: 11px;
+  font-style: normal;
+  margin-left: auto;
+  padding-left: 12px;
+  flex-shrink: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 120px;
+}
+
+/* ===== Comportamiento con teclado virtual abierto ===== */
+
+/*
+ * Cuando el teclado virtual está abierto, `syncKeyboardClassToEditor`
+ * añade la clase `cm-keyboard-open` al `.cm-editor`. Forzamos que el
+ * popup se abra hacia arriba (empujándolo con transform) y limitamos
+ * su altura al espacio visible.
+ */
+
+.cm-editor.cm-keyboard-open .cm-tooltip-autocomplete {
+  transform: translateY(-100%);
+}
+
+.cm-editor.cm-keyboard-open .cm-tooltip-autocomplete > ul {
+  max-height: min(160px, 22vh);
+}
+
+/* ===== Ajustes generales en pantallas pequeñas ===== */
+
+@media (max-width: 480px) {
+  .cm-tooltip-autocomplete {
+    max-width: min(280px, calc(100vw - 24px));
+    font-size: 13px;
+  }
+
+  .cm-tooltip-autocomplete > ul > li {
+    padding: 8px 12px 8px 8px;
+    /* Área táctil más generosa */
+    min-height: 36px;
+  }
+
+  .cm-completionDetail {
+    max-width: 80px;
+    font-size: 10px;
+  }
+}
+
+/* ===== Contención del scroll ===== */
+
+.cm-tooltip-autocomplete > ul {
+  overscroll-behavior: contain;
+}
+
+/* ==========================================================
+   empty-state.css
+   ==========================================================
+*/
+/* ===== Empty state (sin archivos abiertos) ===== */
+
+.empty-state {
+  position: absolute;
+  inset: 0;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 24px;
+  background: #0a0a0a;
+  z-index: 10;
+  text-align: center;
+}
+
+.empty-state.is-visible {
+  display: flex;
+}
+
+.empty-title {
+  font-size: 15px;
+  color: #737373;
+  font-weight: 500;
+}
+
+.empty-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  max-width: 280px;
+}
+
+.empty-btn {
+  padding: 14px 20px;
+  background: #1f1f1f;
+  border: none;
+  border-radius: 10px;
+  color: #ededed;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.empty-btn:active {
+  background: #2f2f2f;
+}
+
+.empty-btn-open {
+  background: #10b981;
+  color: #fff;
+}
+
+.empty-btn-open:active {
+  background: #059669;
+}
+
+/* ==========================================================
+   output.css
+   ==========================================================
+*/
+/* ===== Panel de salida ===== */
+
+.output-panel {
+  flex-shrink: 0;
+  display: none;
+  flex-direction: column;
+  height: 40vh;
+  min-height: 180px;
+  max-height: 60vh;
+  background: #0f0f0f;
+  border-top: 1px solid #262626;
+}
+
+.output-panel.is-visible {
+  display: flex;
+}
+
+/* ===== Header ===== */
+
+.output-header {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  background: #171717;
+  border-bottom: 1px solid #262626;
+}
+
+.output-title {
+  flex: 1;
+  font-size: 11px;
+  font-weight: 600;
+  color: #a3a3a3;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+.output-icon-btn {
+  width: 30px;
+  height: 30px;
+  background: #1f1f1f;
+  border: none;
+  border-radius: 6px;
+  color: #a3a3a3;
+  font-size: 14px;
+  cursor: pointer;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  font-family: inherit;
+}
+
+.output-icon-btn:active {
+  background: #2f2f2f;
+  color: #ededed;
+}
+
+/* ===== Body ===== */
+
+.output-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px 12px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  line-height: 1.5;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
+/* ===== Líneas ===== */
+
+.output-line {
+  display: flex;
+  gap: 4px;
+  padding: 2px 0;
+  word-break: break-word;
+  white-space: pre-wrap;
+  flex-wrap: wrap;
+}
+
+.output-line-header {
+  display: flex;
+  gap: 4px;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.output-prefix {
+  color: #525252;
+  flex-shrink: 0;
+}
+
+.output-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.output-line-log .output-text {
+  color: #ededed;
+}
+
+.output-line-info {
+  color: #737373;
+  font-style: italic;
+  padding: 4px 0;
+}
+
+.output-line-warn .output-text {
+  color: #f59e0b;
+}
+
+.output-line-warn .output-prefix {
+  color: #b45309;
+}
+
+.output-line-error .output-text {
+  color: #ef4444;
+}
+
+.output-line-error .output-prefix {
+  color: #dc2626;
+}
+
+/* ===== Stack trace ===== */
+
+.output-stack {
+  margin: 6px 0 4px 16px;
+  padding: 6px 10px;
+  background: #1a1a1a;
+  border-left: 2px solid #ef4444;
+  border-radius: 4px;
+  color: #a3a3a3;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11px;
+  line-height: 1.5;
+  overflow-x: auto;
+  white-space: pre;
+  max-width: 100%;
+}
+
+/* ===== Línea de "Ejecutando…" con botón detener ===== */
+
+.output-running {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0;
+  color: #737373;
+  font-style: italic;
+}
+
+.output-running-icon {
+  flex-shrink: 0;
+  font-size: 14px;
+  animation: output-spin 1.2s linear infinite;
+  display: inline-block;
+}
+
+@keyframes output-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.output-running-text {
+  flex: 1;
+}
+
+.output-stop-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 10px;
+  background: #7f1d1d;
+  border: none;
+  border-radius: 6px;
+  color: #fecaca;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  flex-shrink: 0;
+  font-style: normal;
+}
+
+.output-stop-btn:active {
+  background: #991b1b;
+  color: #fff;
+}
+
+/* ===== Contención del scroll ===== */
+
+.output-body {
+  overscroll-behavior: contain;
+}
+
+/* ==========================================================
+   toolbar.css
+   ==========================================================
+*/
+/* ===== Toolbar inferior (símbolos) ===== */
+
+.toolbar {
+  flex-shrink: 0;
+  background: #171717;
+  border-top: 1px solid #262626;
+}
+
+.toolbar-symbols {
+  display: flex;
+  overflow-x: auto;
+  padding: 6px 8px;
+  gap: 4px;
+}
+
+.toolbar-symbols::-webkit-scrollbar {
+  display: none;
+}
+.toolbar-symbols {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.toolbar-symbol {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  background: #1f1f1f;
+  border: none;
+  border-radius: 6px;
+  color: #ededed;
+  font-size: 14px;
+  font-family: ui-monospace, monospace;
+  cursor: pointer;
+  user-select: none;
+}
+
+.toolbar-symbol:active {
+  background: #2f2f2f;
+}
+
+/* ==========================================================
+   popup-menu.css
+   ==========================================================
+*/
+/* ===== Popup menu genérico ===== */
+
+/* Base (por si algún día se usa inline) */
+.popup-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 6px;
+  min-width: 200px;
+  max-width: calc(100vw - 20px);
+  display: flex;
+  flex-direction: column;
+  background: #262626;
+  border: 1px solid #333333;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  z-index: 200;
+  padding: 4px;
+  flex-shrink: 0;
+  animation: popup-menu-in 0.15s ease-out;
+}
+
+/* ===== Variante fija ===== */
+/* Se usa cuando el popup no puede vivir dentro del padre porque éste
+   tiene overflow: hidden (ej: la barra de acciones). */
+.popup-menu.popup-menu-fixed {
+  position: fixed;
+  top: auto;
+  bottom: auto;
+  right: auto;
+  left: auto;
+  z-index: 300; /* por encima de fileBrowser (100) e itemMenu (200) */
+}
+
+@keyframes popup-menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ===== Item del popup ===== */
+
+.popup-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: none;
+  border: none;
+  border-radius: 6px;
+  color: #ededed;
+  font-size: 14px;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.popup-menu-item:active {
+  background: #333333;
+}
+
+.popup-menu-item:disabled,
+.popup-menu-item.is-disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.popup-menu-item:disabled:active,
+.popup-menu-item.is-disabled:active {
+  background: none;
+}
+
+.popup-menu-item.is-danger {
+  color: #ef4444;
+}
+
+.popup-menu-item.is-danger:active {
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.popup-menu-item.is-danger:disabled {
+  color: #ef4444;
+  opacity: 0.4;
+}
+
+/* Separador entre grupos */
+.popup-menu-separator {
+  height: 1px;
+  background: #333333;
+  margin: 4px 8px;
+}
+
+/* ===== Contenedor del trigger ===== */
+
+.popup-menu-container {
+  position: relative;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+
+/* Slot dentro de `.actions` */
+.actions-menu-slot {
+  position: relative;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+
+/* ===== Iconos de los items ===== */
+
+.popup-menu-icon {
+  flex-shrink: 0;
+  width: 20px;
+  text-align: center;
+  font-size: 15px;
+}
+
+/* ==========================================================
+   file-browser.css
+   ==========================================================
+*/
+/* ===== File Browser (bottom sheet) ===== */
+
+.fb-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 100;
+  display: flex;
+  align-items: flex-end;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease-out;
+}
+
+.fb-overlay.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.fb-panel {
+  width: 100%;
+  max-height: 75vh;
+  background: #171717;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  transform: translateY(100%);
+  transition: transform 0.25s ease-out;
+  padding-bottom: env(safe-area-inset-bottom);
+  position: relative;
+}
+
+.fb-overlay.is-visible .fb-panel {
+  transform: translateY(0);
+}
+
+/* ===== Header ===== */
+
+.fb-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  border-bottom: 1px solid #262626;
+  flex-shrink: 0;
+}
+
+.fb-back,
+.fb-close,
+.fb-root-btn {
+  width: 36px;
+  height: 36px;
+  background: #1f1f1f;
+  border: none;
+  border-radius: 8px;
+  color: #ededed;
+  font-size: 16px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.fb-root-btn {
+  font-size: 15px;
+}
+
+.fb-back:active,
+.fb-close:active,
+.fb-root-btn:active {
+  background: #2f2f2f;
+}
+
+.fb-path {
+  flex: 1;
+  font-size: 13px;
+  color: #ededed;
+  font-family: ui-monospace, monospace;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fb-options-btn {
+  width: 36px;
+  height: 36px;
+  background: #1f1f1f;
+  border: none;
+  border-radius: 8px;
+  color: #ededed;
+  font-size: 20px;
+  font-weight: 700;
+  cursor: pointer;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.fb-options-btn:active {
+  background: #2f2f2f;
+}
+
+.fb-confirm {
+  height: 36px;
+  padding: 0 14px;
+  background: #10b981;
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.fb-confirm:active {
+  background: #059669;
+}
+
+/* ===== Popup de opciones (⋯) ===== */
+
+.fb-options-panel {
+  position: absolute;
+  top: 56px;
+  right: 10px;
+  min-width: 200px;
+  max-width: calc(100% - 20px);
+  display: flex;
+  flex-direction: column;
+  background: #262626;
+  border: 1px solid #333333;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  z-index: 20;
+  padding: 4px;
+  animation: fb-popup-in 0.15s ease-out;
+}
+
+@keyframes fb-popup-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.fb-option-item {
+  padding: 12px 14px;
+  background: none;
+  border: none;
+  border-radius: 6px;
+  color: #ededed;
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.fb-option-item:active {
+  background: #333333;
+}
+
+/* ===== Chips de sugerencias ===== */
+
+.fb-chips {
+  display: flex;
+  overflow-x: auto;
+  gap: 6px;
+  padding: 8px 12px;
+  border-bottom: 1px solid #262626;
+  flex-shrink: 0;
+}
+
+.fb-chips::-webkit-scrollbar {
+  display: none;
+}
+.fb-chips {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.fb-chip {
+  flex-shrink: 0;
+  padding: 6px 12px;
+  background: #1f1f1f;
+  border: none;
+  border-radius: 999px;
+  color: #ededed;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.fb-chip:active {
+  background: #2f2f2f;
+}
+
+/* ===== Input de nombre ===== */
+
+.fb-name-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-bottom: 1px solid #262626;
+  flex-shrink: 0;
+}
+
+.fb-name-label {
+  font-size: 12px;
+  color: #737373;
+  flex-shrink: 0;
+}
+
+.fb-name-input {
+  flex: 1;
+  min-width: 0;
+  padding: 8px 10px;
+  background: #0a0a0a;
+  border: 1px solid #2f2f2f;
+  border-radius: 6px;
+  color: #ededed;
+  font-family: ui-monospace, monospace;
+  font-size: 13px;
+  outline: none;
+}
+
+.fb-name-input:focus {
+  border-color: #10b981;
+}
+
+/* ===== Lista ===== */
+
+.fb-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px;
+  min-height: 200px;
+}
+
+.fb-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: none;
+  border: none;
+  border-radius: 8px;
+  color: #ededed;
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s;
+}
+
+.fb-item:active {
+  background: #1f1f1f;
+}
+
+.fb-item.is-pressing {
+  background: #1f1f1f !important;
+  transform: scale(0.98);
+}
+
+.fb-icon {
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.fb-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fb-loading,
+.fb-empty,
+.fb-error {
+  padding: 24px;
+  text-align: center;
+  color: #737373;
+  font-size: 13px;
+}
+
+.fb-error {
+  color: #ef4444;
+}
+
+/* ===== Contención del scroll ===== */
+
+.fb-list {
+  overscroll-behavior: contain;
+}
+
+.fb-panel {
+  overscroll-behavior: contain;
+}
+
+/* ==========================================================
+   menus.css
+   ==========================================================
+*/
+/* ===== Tab Menu / Item Menu (bottom sheet pequeño) ===== */
+
+.tm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 200;
+  display: flex;
+  align-items: flex-end;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease-out;
+}
+
+.tm-overlay.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.tm-panel {
+  width: 100%;
+  background: #171717;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  transform: translateY(100%);
+  transition: transform 0.22s ease-out;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.tm-overlay.is-visible .tm-panel {
+  transform: translateY(0);
+}
+
+.tm-header {
+  padding: 14px 16px 8px;
+  border-bottom: 1px solid #262626;
+}
+
+.tm-title {
+  font-size: 13px;
+  color: #737373;
+  font-family: ui-monospace, monospace;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tm-list {
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.tm-item {
+  width: 100%;
+  padding: 14px 16px;
+  background: none;
+  border: none;
+  border-radius: 10px;
+  color: #ededed;
+  font-size: 15px;
+  text-align: left;
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: 500;
+}
+
+.tm-item:active {
+  background: #1f1f1f;
+}
+
+.tm-item.is-danger {
+  color: #ef4444;
+}
+
+.tm-item.is-danger:active {
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.tm-separator {
+  padding: 12px 16px 6px;
+  font-size: 11px;
+  color: #525252;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+.tm-cancel {
+  width: 100%;
+  padding: 14px 16px;
+  background: #1f1f1f;
+  border: none;
+  border-radius: 10px;
+  color: #ededed;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: inherit;
+  margin-top: 8px;
+}
+
+.tm-cancel:active {
+  background: #2f2f2f;
+}
+
+/* ===== Contención del scroll ===== */
+
+.tm-panel {
+  overscroll-behavior: contain;
+}

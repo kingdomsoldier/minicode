@@ -1,0 +1,198 @@
+/* ===== Panel de salida ===== */
+
+.output-panel {
+  flex-shrink: 0;
+  display: none;
+  flex-direction: column;
+  height: 40vh;
+  min-height: 180px;
+  max-height: 60vh;
+  background: #0f0f0f;
+  border-top: 1px solid #262626;
+}
+
+.output-panel.is-visible {
+  display: flex;
+}
+
+/* ===== Header ===== */
+
+.output-header {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  background: #171717;
+  border-bottom: 1px solid #262626;
+}
+
+.output-title {
+  flex: 1;
+  font-size: 11px;
+  font-weight: 600;
+  color: #a3a3a3;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+.output-icon-btn {
+  width: 30px;
+  height: 30px;
+  background: #1f1f1f;
+  border: none;
+  border-radius: 6px;
+  color: #a3a3a3;
+  font-size: 14px;
+  cursor: pointer;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  font-family: inherit;
+}
+
+.output-icon-btn:active {
+  background: #2f2f2f;
+  color: #ededed;
+}
+
+/* ===== Body ===== */
+
+.output-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px 12px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  line-height: 1.5;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
+/* ===== Líneas ===== */
+
+.output-line {
+  display: flex;
+  gap: 4px;
+  padding: 2px 0;
+  word-break: break-word;
+  white-space: pre-wrap;
+  flex-wrap: wrap;
+}
+
+.output-line-header {
+  display: flex;
+  gap: 4px;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.output-prefix {
+  color: #525252;
+  flex-shrink: 0;
+}
+
+.output-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.output-line-log .output-text {
+  color: #ededed;
+}
+
+.output-line-info {
+  color: #737373;
+  font-style: italic;
+  padding: 4px 0;
+}
+
+.output-line-warn .output-text {
+  color: #f59e0b;
+}
+
+.output-line-warn .output-prefix {
+  color: #b45309;
+}
+
+.output-line-error .output-text {
+  color: #ef4444;
+}
+
+.output-line-error .output-prefix {
+  color: #dc2626;
+}
+
+/* ===== Stack trace ===== */
+
+.output-stack {
+  margin: 6px 0 4px 16px;
+  padding: 6px 10px;
+  background: #1a1a1a;
+  border-left: 2px solid #ef4444;
+  border-radius: 4px;
+  color: #a3a3a3;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11px;
+  line-height: 1.5;
+  overflow-x: auto;
+  white-space: pre;
+  max-width: 100%;
+}
+
+/* ===== Línea de "Ejecutando…" con botón detener ===== */
+
+.output-running {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0;
+  color: #737373;
+  font-style: italic;
+}
+
+.output-running-icon {
+  flex-shrink: 0;
+  font-size: 14px;
+  animation: output-spin 1.2s linear infinite;
+  display: inline-block;
+}
+
+@keyframes output-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.output-running-text {
+  flex: 1;
+}
+
+.output-stop-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 10px;
+  background: #7f1d1d;
+  border: none;
+  border-radius: 6px;
+  color: #fecaca;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  flex-shrink: 0;
+  font-style: normal;
+}
+
+.output-stop-btn:active {
+  background: #991b1b;
+  color: #fff;
+}
+
+/* ===== Contención del scroll ===== */
+
+.output-body {
+  overscroll-behavior: contain;
+}

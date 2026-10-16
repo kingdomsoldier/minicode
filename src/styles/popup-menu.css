@@ -1,0 +1,123 @@
+/* ===== Popup menu genérico ===== */
+
+/* Base (por si algún día se usa inline) */
+.popup-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 6px;
+  min-width: 200px;
+  max-width: calc(100vw - 20px);
+  display: flex;
+  flex-direction: column;
+  background: #262626;
+  border: 1px solid #333333;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  z-index: 200;
+  padding: 4px;
+  flex-shrink: 0;
+  animation: popup-menu-in 0.15s ease-out;
+}
+
+/* ===== Variante fija ===== */
+/* Se usa cuando el popup no puede vivir dentro del padre porque éste
+   tiene overflow: hidden (ej: la barra de acciones). */
+.popup-menu.popup-menu-fixed {
+  position: fixed;
+  top: auto;
+  bottom: auto;
+  right: auto;
+  left: auto;
+  z-index: 300; /* por encima de fileBrowser (100) e itemMenu (200) */
+}
+
+@keyframes popup-menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ===== Item del popup ===== */
+
+.popup-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: none;
+  border: none;
+  border-radius: 6px;
+  color: #ededed;
+  font-size: 14px;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.popup-menu-item:active {
+  background: #333333;
+}
+
+.popup-menu-item:disabled,
+.popup-menu-item.is-disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.popup-menu-item:disabled:active,
+.popup-menu-item.is-disabled:active {
+  background: none;
+}
+
+.popup-menu-item.is-danger {
+  color: #ef4444;
+}
+
+.popup-menu-item.is-danger:active {
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.popup-menu-item.is-danger:disabled {
+  color: #ef4444;
+  opacity: 0.4;
+}
+
+/* Separador entre grupos */
+.popup-menu-separator {
+  height: 1px;
+  background: #333333;
+  margin: 4px 8px;
+}
+
+/* ===== Contenedor del trigger ===== */
+
+.popup-menu-container {
+  position: relative;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+
+/* Slot dentro de `.actions` */
+.actions-menu-slot {
+  position: relative;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+
+/* ===== Iconos de los items ===== */
+
+.popup-menu-icon {
+  flex-shrink: 0;
+  width: 20px;
+  text-align: center;
+  font-size: 15px;
+}
